@@ -1,15 +1,17 @@
-package be.kdg.chat;
+package be.kdg.chat.server;
 
+import be.kdg.chat.client.IChatClient;
+import be.kdg.chat.server.IChatServer;
 import be.kdg.chat.util.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChatServer implements IChatServer{
+public class ChatServerImplementation implements IChatServer {
     private static final Logger LOGGER = Logger.getLogger("ChatServer");
     private List<IChatClient> clients;
 
-    public ChatServer() {
+    public ChatServerImplementation() {
         this.clients = new ArrayList<>();
     }
 
@@ -25,10 +27,11 @@ public class ChatServer implements IChatServer{
 
         // register client to server
         this.clients.add(client);
-        LOGGER.info("Client " + client.toString() + " has been registered" );
+        String name = client.getName();
+        LOGGER.info("Client " + name + " has been registered" );
 
         // notify users
-        this.send("SERVER", "client joined server from address " + client);
+        this.send("SERVER", name + " has connected to the server from " + client.toString());
 
     }
 
@@ -63,7 +66,7 @@ public class ChatServer implements IChatServer{
             client.receive(transmittedMessage);
 
             // log transmission
-            LOGGER.info(String.format("Sending\"%s\" to client %s", transmittedMessage, client.toString()));
+            LOGGER.info(String.format("Sending \"%s\" to client %s", transmittedMessage, client.toString()));
 
         }
 
@@ -71,8 +74,9 @@ public class ChatServer implements IChatServer{
 
     // == PRIVATE METHODS ==================
     private boolean clientExists(IChatClient client) {
-        for (IChatClient c : clients) {
-            if (client.equals(c)) return true;
+
+        for (IChatClient c : this.clients) {
+            if (c.equals(client)) return true;
         }
 
         return false;

@@ -1,4 +1,6 @@
-package be.kdg.chat;
+package be.kdg.chat.server;
+
+import be.kdg.chat.client.IChatClient;
 
 public interface IChatServer {
     void register(IChatClient client);

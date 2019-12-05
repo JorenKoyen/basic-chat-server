@@ -1,6 +1,6 @@
-package be.kdg.chat;
+package be.kdg.chat.client;
 
 public interface IChatClient {
     void receive(String message);
-    boolean equals(IChatClient client);
+    String getName();
 }
